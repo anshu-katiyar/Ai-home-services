@@ -41,14 +41,19 @@ export default function Navbar() {
 
         <div className="flex gap-3">
 
-          <button className="border border-blue-600 px-4 py-2 rounded-lg hover:bg-blue-50">
+          <Link
+            to="/login"
+            className="border border-blue-600 px-4 py-2 rounded-lg"
+          >
             Login
-          </button>
+          </Link>
 
-          <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">
+          <Link
+             to="/signup"
+             className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+          >
             Signup
-          </button>
-
+          </Link>
         </div>
 
       </div>
