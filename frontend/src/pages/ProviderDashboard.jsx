@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getProviderBookings } from "../services/providerService";
 
 export default function ProviderDashboard() {
 
@@ -6,9 +7,25 @@ export default function ProviderDashboard() {
 
     useEffect(() => {
 
-        // API next step me connect karenge
+        loadBookings();
 
     }, []);
+
+    const loadBookings = async () => {
+
+        try {
+
+            const data = await getProviderBookings();
+
+            setBookings(data);
+
+        } catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
 
     return (
 
@@ -35,10 +52,32 @@ export default function ProviderDashboard() {
 
                         <div
                             key={booking.id}
-                            className="border rounded-lg p-5 mb-5"
+                            className="bg-white shadow rounded-lg p-6 mb-5"
                         >
 
-                            Booking Card
+                            <h2 className="text-xl font-bold mb-3">
+                                Booking Details
+                            </h2>
+
+                            <p>
+                                <strong>Email:</strong> {booking.customer_email}
+                            </p>
+
+                            <p>
+                                <strong>Address:</strong> {booking.address}
+                            </p>
+
+                            <p>
+                                <strong>Date:</strong> {booking.booking_date}
+                            </p>
+
+                            <p>
+                                <strong>Time:</strong> {booking.booking_time}
+                            </p>
+
+                            <p>
+                                <strong>Status:</strong> {booking.status || "Pending"}
+                            </p>
 
                         </div>
 
@@ -52,19 +91,3 @@ export default function ProviderDashboard() {
     );
 
 }
-
-
-
-// export default function ProviderDashboard() {
-//   return (
-//     <div className="p-10 bg-yellow-200 min-h-screen">
-//       <h1 className="text-5xl font-bold text-red-600">
-//         Provider Dashboard Working 🚀
-//       </h1>
-
-//       <p className="mt-5 text-2xl">
-//         If you can see this, routing is working.
-//       </p>
-//     </div>
-//   );
-// }
