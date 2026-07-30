@@ -29,6 +29,8 @@ export default function Booking() {
 
     try {
 
+        console.log("Service ID:", id);
+        
         const bookingData = {
 
             service_id: id,
