@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import {
     getProviderBookings,
     acceptBooking,
-    rejectBooking
+    rejectBooking,
+    onTheWayBooking,
+    completeBooking
 } from "../services/providerService";
 
 export default function ProviderDashboard() {
@@ -69,6 +71,46 @@ const handleReject = async (bookingId) => {
         console.log(error);
 
         alert("Unable to reject booking");
+
+    }
+
+};
+
+const handleOnTheWay = async (bookingId) => {
+
+    try {
+
+        await onTheWayBooking(bookingId);
+
+        alert("Provider is on the way");
+
+        loadBookings();
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Unable to update booking");
+
+    }
+
+};
+
+const handleComplete = async (bookingId) => {
+
+    try {
+
+        await completeBooking(bookingId);
+
+        alert("Service Completed Successfully");
+
+        loadBookings();
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Unable to complete service");
 
     }
 
@@ -174,6 +216,34 @@ const handleReject = async (bookingId) => {
 
     )
 }
+
+{
+    booking.status === "Accepted" && (
+
+        <button
+            onClick={() => handleOnTheWay(booking.id)}
+            className="mt-4 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
+        >
+            On The Way
+        </button>
+
+    )
+}
+
+{
+    booking.status === "On The Way" && (
+
+        <button
+            onClick={() => handleComplete(booking.id)}
+            className="mt-4 bg-emerald-600 text-white px-5 py-2 rounded hover:bg-emerald-700"
+        >
+            Mark as Completed
+        </button>
+
+    )
+}
+
+
                         </div>
 
                     ))

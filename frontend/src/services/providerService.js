@@ -24,3 +24,25 @@ export const rejectBooking = async (bookingId) => {
     return response.data;
 
 };
+
+
+export const onTheWayBooking = async (bookingId) => {
+
+    const response = await axios.put(
+        `${API}/provider/on-the-way/${bookingId}`
+    );
+
+    return response.data;
+
+};
+
+
+export const completeBooking = async (bookingId) => {
+
+    const response = await axios.put(
+        `${API}/provider/complete/${bookingId}`
+    );
+
+    return response.data;
+
+};

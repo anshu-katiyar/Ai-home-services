@@ -81,3 +81,24 @@ def on_the_way_booking(booking_id: str):
         "message": "Provider is on the way",
         "modified": result.modified_count
     }
+
+
+
+@router.put("/complete/{booking_id}")
+def complete_booking(booking_id: str):
+
+    result = db.bookings.update_one(
+        {
+            "_id": ObjectId(booking_id)
+        },
+        {
+            "$set": {
+                "status": "Completed"
+            }
+        }
+    )
+
+    return {
+        "message": "Service Completed",
+        "modified": result.modified_count
+    }
