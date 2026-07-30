@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { getProviderBookings } from "../services/providerService";
+import {
+    getProviderBookings,
+    acceptBooking
+} from "../services/providerService";
 
 export default function ProviderDashboard() {
 
@@ -26,6 +29,27 @@ export default function ProviderDashboard() {
         }
 
     };
+
+
+    const handleAccept = async (bookingId) => {
+
+    try {
+
+        await acceptBooking(bookingId);
+
+        alert("Booking Accepted Successfully");
+
+        loadBookings();
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Unable to accept booking");
+
+    }
+
+};
 
     return (
 
@@ -78,6 +102,19 @@ export default function ProviderDashboard() {
                             <p>
                                 <strong>Status:</strong> {booking.status || "Pending"}
                             </p>
+
+                            {
+    booking.status !== "Accepted" && (
+
+        <button
+            onClick={() => handleAccept(booking.id)}
+            className="mt-4 bg-green-600 text-white px-5 py-2 rounded hover:bg-green-700"
+        >
+            Accept Booking
+        </button>
+
+    )
+}
 
                         </div>
 
