@@ -1,0 +1,19 @@
+# Created by venv; see https://docs.python.org/3/library/venv.html
+# Python
+backend/venv/
+backend/__pycache__/
+backend/**/*.pyc
+
+# Node
+frontend/node_modules/
+
+# Environment files
+backend/.env
+frontend/.env
+
+# Build folders
+frontend/dist/
+
+# OS files
+.DS_Store
+Thumbs.db
