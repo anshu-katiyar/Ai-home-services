@@ -16,24 +16,32 @@ export default function Navbar() {
         <div className="hidden md:flex gap-8 items-center">
 
           <Link className="flex items-center gap-2 hover:text-blue-600" to="/">
-            <FaHome />
-            Home
-          </Link>
+  <FaHome />
+  Home
+</Link>
 
-          <Link className="flex items-center gap-2 hover:text-blue-600" to="/services">
-            <MdMiscellaneousServices />
-            Services
-          </Link>
+<Link className="flex items-center gap-2 hover:text-blue-600" to="/services">
+  <MdMiscellaneousServices />
+  Services
+</Link>
 
-          <Link className="flex items-center gap-2 hover:text-blue-600" to="/provider">
-            <FaUserTie />
-            Provider
-          </Link>
+{/* <Link className="flex items-center gap-2 hover:text-blue-600" to="/provider">
+  <FaUserTie />
+  Provider
+</Link> */}
 
-          <Link className="flex items-center gap-2 hover:text-blue-600" to="/assistant">
-            <FaRobot />
-            AI Assistant
-          </Link>
+<Link className="flex items-center gap-2 hover:text-blue-600" to="/assistant">
+  <FaRobot />
+  AI Assistant
+</Link>
+
+<Link className="flex items-center gap-2 hover:text-blue-600" to="/my-bookings">
+  My Bookings
+</Link>
+
+<Link className="flex items-center gap-2 hover:text-blue-600" to="/provider-dashboard">
+  Provider Dashboard
+</Link>
 
         </div>
 
@@ -55,13 +63,6 @@ export default function Navbar() {
             Signup
           </Link>
 
-
-          <Link
-  className="flex items-center gap-2 hover:text-blue-600"
-  to="/my-bookings"
->
-  My Bookings
-</Link>
         </div>
 
       </div>

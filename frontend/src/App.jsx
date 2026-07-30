@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/layout/Navbar";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -15,6 +17,8 @@ import MyBookings from "./pages/MyBookings";
 
 function App() {
   return (
+    <>
+      <Navbar />
     <Routes>
 
   <Route path="/" element={<Home />} />
@@ -24,6 +28,7 @@ function App() {
   <Route path="/login" element={<Login />} />
 
   <Route path="/signup" element={<Signup />} />
+
   <Route
     path="/services/:id"
     element={<ServiceDetails />}
@@ -39,14 +44,13 @@ function App() {
 />
 
 <Route
-    path="/provider"
+    path="/provider-dashboard"
     element={
         <ProtectedRoute>
             <ProviderDashboard />
         </ProtectedRoute>
     }
 />
-
 <Route
     path="/admin"
     element={
@@ -66,7 +70,7 @@ function App() {
   element={<MyBookings />}
 />
     </Routes>
-
+</>
     
   );
 }
