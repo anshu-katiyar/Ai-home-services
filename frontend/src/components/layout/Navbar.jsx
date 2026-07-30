@@ -54,6 +54,14 @@ export default function Navbar() {
           >
             Signup
           </Link>
+
+
+          <Link
+  className="flex items-center gap-2 hover:text-blue-600"
+  to="/my-bookings"
+>
+  My Bookings
+</Link>
         </div>
 
       </div>

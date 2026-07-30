@@ -1,56 +1,98 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { loginUser } from "../services/authService";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 
 export default function Login() {
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+
+      const res = await loginUser({
+        email,
+        password
+      });
+
+      login(
+    res.data.access_token,
+    res.data.role
+);
+
+alert("Login Successful");
+
+if (res.data.role === "customer") {
+    navigate("/customer");
+}
+else if (res.data.role === "provider") {
+    navigate("/provider");
+}
+else if (res.data.role === "admin") {
+    navigate("/admin");
+}
+else {
+    navigate("/");
+}
+
+      console.log(res.data);
+
+    } catch (err) {
+
+      alert(
+        err.response?.data?.detail ||
+        "Login Failed"
+      );
+
+    }
+
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100">
 
-      <div className="bg-white p-10 rounded-2xl shadow-xl w-full max-w-md">
+    <div className="min-h-screen flex justify-center items-center bg-gray-100">
 
-        <h1 className="text-4xl font-bold text-center text-blue-600">
-          Welcome Back
+      <form
+        onSubmit={handleLogin}
+        className="bg-white p-8 rounded-xl shadow-lg w-96"
+      >
+
+        <h1 className="text-3xl font-bold mb-6">
+          Login
         </h1>
 
-        <p className="text-center text-gray-500 mt-2">
-          Login to your HomeAI account
-        </p>
+        <input
+          type="email"
+          placeholder="Email"
+          className="border p-3 w-full mb-4 rounded"
+          onChange={(e)=>setEmail(e.target.value)}
+        />
 
-        <form className="mt-8 space-y-5">
+        <input
+          type="password"
+          placeholder="Password"
+          className="border p-3 w-full mb-4 rounded"
+          onChange={(e)=>setPassword(e.target.value)}
+        />
 
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full border rounded-lg p-3"
-          />
+        <button
+          className="bg-green-600 text-white w-full p-3 rounded"
+        >
+          Login
+        </button>
 
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border rounded-lg p-3"
-          />
-
-          <button
-            className="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700"
-          >
-            Login
-          </button>
-
-        </form>
-
-        <p className="text-center mt-6">
-
-          Don't have an account?
-
-          <Link
-            to="/signup"
-            className="text-blue-600 ml-2"
-          >
-            Signup
-          </Link>
-
-        </p>
-
-      </div>
+      </form>
 
     </div>
+
   );
+
 }

@@ -1,65 +1,96 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getServices } from "../services/serviceService";
+import ServiceCard from "../components/common/ServiceCard";
 
-const services = [
-  { id: 1, name: "Electrician", icon: "⚡", price: "₹299" },
-  { id: 2, name: "Plumber", icon: "🚿", price: "₹249" },
-  { id: 3, name: "AC Repair", icon: "❄️", price: "₹499" },
-  { id: 4, name: "Cleaning", icon: "🧹", price: "₹699" },
-  { id: 5, name: "Painting", icon: "🎨", price: "₹999" },
-  { id: 6, name: "Carpenter", icon: "🪚", price: "₹399" },
-];
+
 
 export default function Services() {
-  const [search, setSearch] = useState("");
 
-  const filtered = services.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
+    const [services, setServices] = useState([]);
+    const [search, setSearch] = useState("");
+    const [category, setCategory] = useState("All");
 
-  return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
+    useEffect(() => {
 
-      <h1 className="text-5xl font-bold mb-8">
-        Home Services
-      </h1>
+        fetchServices();
 
-      <input
-        type="text"
-        placeholder="Search Service..."
-        className="border p-4 rounded-xl w-full mb-8"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+    }, []);
 
-      <div className="grid md:grid-cols-3 gap-8">
+    const fetchServices = async () => {
 
-        {filtered.map((item) => (
+        try {
 
-          <div
-            key={item.id}
-            className="shadow-lg rounded-xl p-8 hover:shadow-2xl transition"
-          >
+            const res = await getServices();
 
-            <h2 className="text-4xl">{item.icon}</h2>
+            setServices(res.data);
 
-            <h3 className="text-2xl font-bold mt-4">
-              {item.name}
-            </h3>
+        } catch (error) {
 
-            <p className="mt-3 text-gray-500">
-              Starting from {item.price}
-            </p>
+            console.log(error);
 
-            <button className="mt-6 bg-blue-600 text-white px-5 py-3 rounded-lg">
-              Book Now
-            </button>
+        }
 
-          </div>
+    };
 
-        ))}
+    return (
 
-      </div>
+        <div className="max-w-7xl mx-auto p-8">
 
-    </div>
-  );
+            <h1 className="text-4xl font-bold mb-8">
+
+                Home Services
+
+            </h1>
+
+            <input
+  type="text"
+  placeholder="🔍 Search Services..."
+  value={search}
+  onChange={(e) => setSearch(e.target.value)}
+  className="w-full border rounded-lg px-4 py-3 mb-8 focus:outline-none focus:ring-2 focus:ring-blue-500"
+/>
+
+
+
+<select
+  value={category}
+  onChange={(e) => setCategory(e.target.value)}
+  className="w-full border rounded-lg px-4 py-3 mb-8"
+>
+  <option value="All">All Categories</option>
+  <option value="Electrical">Electrical</option>
+  <option value="Plumbing">Plumbing</option>
+  <option value="Cleaning">Cleaning</option>
+  <option value="Painting">Painting</option>
+  <option value="AC Service">AC Service</option>
+</select>
+
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+               {services
+  .filter((service) => {
+    const matchSearch = service.name
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    const matchCategory =
+      category === "All" ||
+      service.category === category;
+
+    return matchSearch && matchCategory;
+  })
+  .map((service, index) => (
+    <ServiceCard
+      key={index}
+      service={service}
+    />
+))}
+
+            </div>
+
+        </div>
+
+    );
+
 }
