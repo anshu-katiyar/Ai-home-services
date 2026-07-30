@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+from bson import ObjectId
 from app.database import db
 
 router = APIRouter(
@@ -22,3 +23,23 @@ def provider_bookings():
         data.append(booking)
 
     return data
+
+
+@router.put("/accept/{booking_id}")
+def accept_booking(booking_id: str):
+
+    result = db.bookings.update_one(
+        {
+            "_id": ObjectId(booking_id)
+        },
+        {
+            "$set": {
+                "status": "Accepted"
+            }
+        }
+    )
+
+    return {
+        "message": "Booking Accepted",
+        "modified": result.modified_count
+    }
