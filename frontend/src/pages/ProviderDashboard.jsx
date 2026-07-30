@@ -128,9 +128,28 @@ const handleReject = async (bookingId) => {
                                 <strong>Time:</strong> {booking.booking_time}
                             </p>
 
-                            <p>
-                                <strong>Status:</strong> {booking.status || "Pending"}
-                            </p>
+                            <div className="mt-3">
+
+    <strong>Status : </strong>
+
+    <span
+        className={`px-3 py-1 rounded-full text-white font-semibold
+        ${
+            booking.status === "Accepted"
+                ? "bg-green-600"
+                : booking.status === "Rejected"
+                ? "bg-red-600"
+                : booking.status === "On The Way"
+                ? "bg-blue-600"
+                : booking.status === "Completed"
+                ? "bg-emerald-700"
+                : "bg-yellow-500"
+        }`}
+    >
+        {booking.status || "Pending"}
+    </span>
+
+</div>
 
                            {
     booking.status === "Pending" && (

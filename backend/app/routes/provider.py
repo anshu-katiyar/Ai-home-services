@@ -62,3 +62,22 @@ def reject_booking(booking_id: str):
         "message": "Booking Rejected",
         "modified": result.modified_count
     }
+
+@router.put("/on-the-way/{booking_id}")
+def on_the_way_booking(booking_id: str):
+
+    result = db.bookings.update_one(
+        {
+            "_id": ObjectId(booking_id)
+        },
+        {
+            "$set": {
+                "status": "On The Way"
+            }
+        }
+    )
+
+    return {
+        "message": "Provider is on the way",
+        "modified": result.modified_count
+    }
