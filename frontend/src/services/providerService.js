@@ -14,3 +14,13 @@ export const acceptBooking = async (bookingId) => {
 
     return response.data;
 };
+
+export const rejectBooking = async (bookingId) => {
+
+    const response = await axios.put(
+        `${API}/provider/reject/${bookingId}`
+    );
+
+    return response.data;
+
+};

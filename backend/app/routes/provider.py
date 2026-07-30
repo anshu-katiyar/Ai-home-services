@@ -43,3 +43,22 @@ def accept_booking(booking_id: str):
         "message": "Booking Accepted",
         "modified": result.modified_count
     }
+
+@router.put("/reject/{booking_id}")
+def reject_booking(booking_id: str):
+
+    result = db.bookings.update_one(
+        {
+            "_id": ObjectId(booking_id)
+        },
+        {
+            "$set": {
+                "status": "Rejected"
+            }
+        }
+    )
+
+    return {
+        "message": "Booking Rejected",
+        "modified": result.modified_count
+    }
