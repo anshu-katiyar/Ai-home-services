@@ -7,7 +7,7 @@ import {
     getNotifications,
     markNotificationRead
 } from "../../services/notificationService";
-const notificationSound = new Audio("/sounds/notification.mp3");
+
 
 
 
@@ -20,7 +20,7 @@ export default function Navbar() {
 ).length;
 
 const [lastNotificationId, setLastNotificationId] = useState(null);
-
+const notificationSound = new Audio("/sounds/notification.mp3");
 
 
 useEffect(() => {
@@ -93,9 +93,12 @@ const showBrowserNotification = (title, message) => {
 
     }
 
-    notificationSound.play().catch(() => {});
-};
+   const audio = new Audio("/sounds/notification.wav");
 
+    audio.play().catch((err) => {
+    console.log(err);
+   });
+};
 
 
 const handleNotificationClick = async (id) => {
