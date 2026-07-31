@@ -33,6 +33,8 @@ export const AuthProvider = ({ children }) => {
 
         setToken(null);
         setRole(null);
+        setEmail(null);
+        setFullName(null);
 
     };
 

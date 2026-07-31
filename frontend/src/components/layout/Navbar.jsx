@@ -17,11 +17,26 @@ export default function Navbar() {
     (notification) => !notification.is_read
 ).length;
 
+const [lastNotificationId, setLastNotificationId] = useState(null);
+
+
+
 useEffect(() => {
     if (token) {
         loadNotifications();
     }
 }, [token]);
+
+useEffect(() => {
+
+    if ("Notification" in window) {
+
+        Notification.requestPermission();
+
+    }
+
+}, []);
+
 
 const loadNotifications = async () => {
 
@@ -31,6 +46,21 @@ const loadNotifications = async () => {
 
         setNotifications(data);
 
+        if (data.length > 0) {
+
+    if (lastNotificationId !== data[0].id) {
+
+        setLastNotificationId(data[0].id);
+
+        showBrowserNotification(
+            data[0].title,
+            data[0].message
+        );
+
+    }
+
+}
+
     } catch (error) {
 
         console.log(error);
@@ -38,6 +68,21 @@ const loadNotifications = async () => {
     }
 
 };
+
+const showBrowserNotification = (title, message) => {
+
+    if (Notification.permission === "granted") {
+
+        new Notification(title, {
+            body: message,
+            icon: "/vite.svg"
+        });
+
+    }
+
+};
+
+
 
 const handleNotificationClick = async (id) => {
 
