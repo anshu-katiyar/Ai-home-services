@@ -25,7 +25,9 @@ export default function Login() {
 
       login(
     res.data.access_token,
-    res.data.role
+    res.data.role,
+    res.data.email,
+    res.data.full_name
 );
 
 alert("Login Successful");
