@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { createBooking } from "../services/bookingService";
 import { useParams, useNavigate } from "react-router-dom";
-
+import PaymentButton from "../components/PaymentButton";
 
 export default function Booking() {
 
@@ -30,7 +30,7 @@ export default function Booking() {
     try {
 
         console.log("Service ID:", id);
-        
+
         const bookingData = {
 
             service_id: id,
@@ -42,6 +42,40 @@ export default function Booking() {
             booking_time: form.booking_time
 
         };
+
+    const handlePaymentSuccess = async () => {
+
+    try {
+
+        const bookingData = {
+
+            service_id: id,
+
+            address: form.address,
+
+            booking_date: form.booking_date,
+
+            booking_time: form.booking_time
+
+        };
+
+        const res = await createBooking(bookingData);
+
+        alert(res.data.message);
+
+        navigate("/my-bookings");
+
+    }
+
+    catch(err){
+
+        console.log(err);
+
+        alert("Booking Failed");
+
+    }
+
+};    
 
         const res = await createBooking(bookingData);
 
@@ -101,11 +135,19 @@ export default function Booking() {
                     className="w-full border p-3 rounded-lg"
                 />
 
-                <button
+                {/* <button
                     className="bg-blue-600 text-white px-6 py-3 rounded-lg"
                 >
                     Confirm Booking
-                </button>
+                </button> */}
+
+                <PaymentButton
+
+                    amount={499}
+
+                    onSuccess={handlePaymentSuccess}
+
+                />
 
             </form>
 
