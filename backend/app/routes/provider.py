@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from bson import ObjectId
 from app.database import db
+from fastapi import Depends
+from app.dependencies.auth import get_current_user
 
 router = APIRouter(
     prefix="/provider",
@@ -9,9 +11,23 @@ router = APIRouter(
 
 
 @router.get("/bookings")
-def provider_bookings():
+def provider_bookings(current_user=Depends(get_current_user)):
 
-    bookings = list(db.bookings.find())
+    if current_user["role"] != "provider":
+        return {
+            "message": "Access Denied"
+        }
+
+    print("Current User:", current_user)
+
+    bookings = list(
+    db.bookings.find(
+        {
+            "provider_email": current_user["email"]
+        }
+    )
+)
+    print("Bookings:", bookings)
 
     data = []
 

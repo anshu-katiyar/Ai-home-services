@@ -3,6 +3,8 @@ from app.utils.jwt_handler import verify_token
 
 def get_current_user(authorization: str = Header(...)):
 
+    print("Authorization Header:", authorization)
+
     if not authorization.startswith("Bearer "):
         raise HTTPException(
             status_code=401,
@@ -11,7 +13,11 @@ def get_current_user(authorization: str = Header(...)):
 
     token = authorization.split(" ")[1]
 
+    print("Token:", token)
+
     payload = verify_token(token)
+
+    print("Payload:", payload)
 
     if payload is None:
         raise HTTPException(

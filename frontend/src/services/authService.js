@@ -1,13 +1,9 @@
-import axios from "axios";
-
-const API = axios.create({
-  baseURL: "http://127.0.0.1:8000",
-});
+import api from "./api";
 
 export const loginUser = (data) => {
-  return API.post("/auth/login", data);
+    return api.post("/auth/login", data);
 };
 
 export const signupUser = (data) => {
-  return API.post("/auth/signup", data);
+    return api.post("/auth/signup", data);
 };

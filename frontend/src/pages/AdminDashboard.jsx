@@ -1,12 +1,19 @@
 import { useEffect, useState } from "react";
-import { getAllBookings } from "../services/adminService";
+import {
+    getAllBookings,
+    getProviders,
+    assignProvider
+} from "../services/adminService";
 
 export default function AdminDashboard() {
 
     const [bookings, setBookings] = useState([]);
+    const [providers, setProviders] = useState([]);
+    const [selectedProviders, setSelectedProviders] = useState({});
 
     useEffect(() => {
         loadBookings();
+        loadProviders();
     }, []);
 
     const loadBookings = async () => {
@@ -23,6 +30,60 @@ export default function AdminDashboard() {
         }
 
     };
+
+    const loadProviders = async () => {
+
+    try {
+
+        const data = await getProviders();
+
+        setProviders(data);
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+};
+
+
+const handleAssign = async (bookingId) => {
+
+    const providerId = selectedProviders[bookingId];
+
+    if (!providerId) {
+
+        alert("Please select a provider");
+
+        return;
+
+    }
+
+    try {
+
+        await assignProvider(
+            bookingId,
+            providerId
+        );
+
+        alert("Provider Assigned Successfully");
+
+        loadBookings();
+
+    } catch (error) {
+
+        console.log(error);
+
+        alert("Assignment Failed");
+
+    }
+
+};
+
+
+
+
 
     return (
 
@@ -83,11 +144,69 @@ export default function AdminDashboard() {
 
                                     <td className="p-3">
 
-                                        <button
-                                            className="bg-blue-600 text-white px-4 py-2 rounded"
-                                        >
-                                            Assign Provider
-                                        </button>
+                                        <div className="flex flex-col gap-2">
+
+    <select
+
+        className="border rounded p-2"
+
+        value={selectedProviders[booking.id] || ""}
+
+        onChange={(e) =>
+
+            setSelectedProviders({
+
+                ...selectedProviders,
+
+                [booking.id]: e.target.value
+
+            })
+
+        }
+
+    >
+
+        <option value="">
+
+            Select Provider
+
+        </option>
+
+        {
+
+            providers.map(provider => (
+
+                <option
+
+                    key={provider.id}
+
+                    value={provider.id}
+
+                >
+
+                   {provider.full_name}
+
+                </option>
+
+            ))
+
+        }
+
+    </select>
+
+    <button
+
+        onClick={() => handleAssign(booking.id)}
+
+        className="bg-blue-600 text-white rounded py-2"
+
+    >
+
+        Assign
+
+    </button>
+
+</div>
 
                                     </td>
 

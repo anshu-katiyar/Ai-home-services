@@ -44,8 +44,20 @@ def signup(user: UserSignup):
 @router.post("/login")
 def login(user: UserLogin):
 
+    print("Login Email:", user.email)
+
     db_user = users_collection.find_one(
         {"email": user.email}
+    )
+    print("Database User:", db_user)
+
+    if db_user:
+     print(
+        "Password Match:",
+        verify_password(
+            user.password,
+            db_user["password"]
+        )
     )
 
     if not db_user:

@@ -1,6 +1,8 @@
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from app.config import SECRET_KEY, ALGORITHM
+from fastapi import Depends, HTTPException
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 
 def create_access_token(data: dict):
 
@@ -29,3 +31,23 @@ def verify_token(token: str):
 
     except JWTError:
         return None
+
+
+security = HTTPBearer()
+
+
+def get_current_user(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+
+    token = credentials.credentials
+
+    payload = verify_token(token)
+
+    if payload is None:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Token"
+        )
+
+    return payload
