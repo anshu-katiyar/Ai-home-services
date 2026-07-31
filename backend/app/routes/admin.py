@@ -3,6 +3,8 @@ from app.database import db
 
 from bson import ObjectId
 
+from app.services.notification_service import create_notification
+
 router = APIRouter(
     prefix="/admin",
     tags=["Admin"]
@@ -35,19 +37,25 @@ def assign_provider(booking_id: str, data: dict):
     if not provider:
         return {"message": "Provider not found"}
 
+    # Update booking
     db.bookings.update_one(
         {
             "_id": ObjectId(booking_id)
         },
         {
             "$set": {
-
                 "provider_id": str(provider["_id"]),
-               "provider_name": provider["full_name"],
+                "provider_name": provider["full_name"],
                 "provider_email": provider["email"]
-
             }
         }
+    )
+
+    # Create notification
+    create_notification(
+        provider["email"],
+        "New Booking",
+        f"You have received a new booking. Booking ID: {booking_id}"
     )
 
     return {

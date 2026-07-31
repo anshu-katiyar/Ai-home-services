@@ -1,8 +1,54 @@
 import { Link } from "react-router-dom";
-import { FaHome, FaUserTie, FaRobot } from "react-icons/fa";
+import { FaHome, FaRobot, FaBell } from "react-icons/fa";
 import { MdMiscellaneousServices } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import {
+    getNotifications,
+    markNotificationRead
+} from "../../services/notificationService";
+
 
 export default function Navbar() {
+  const { token, role, logout } = useAuth();
+  const [notifications, setNotifications] = useState([]);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const unreadCount = notifications.filter(
+    (notification) => !notification.is_read
+).length;
+
+useEffect(() => {
+    if (token) {
+        loadNotifications();
+    }
+}, [token]);
+
+const loadNotifications = async () => {
+
+    try {
+
+        const data = await getNotifications();
+
+        setNotifications(data);
+
+    } catch (error) {
+
+        console.log(error);
+
+    }
+
+};
+
+const handleNotificationClick = async (id) => {
+
+    await markNotificationRead(id);
+
+    loadNotifications();
+
+};
+
+
+
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
@@ -47,23 +93,121 @@ export default function Navbar() {
 
         {/* Buttons */}
 
-        <div className="flex gap-3">
+        <div className="flex items-center gap-4">
 
-          <Link
-            to="/login"
-            className="border border-blue-600 px-4 py-2 rounded-lg"
-          >
-            Login
-          </Link>
+    {token && (
 
-          <Link
-             to="/signup"
-             className="bg-blue-600 text-white px-4 py-2 rounded-lg"
-          >
-            Signup
-          </Link>
+        <div className="relative">
 
-        </div>
+    <button
+        onClick={() => setShowNotifications(!showNotifications)}
+        className="relative text-2xl"
+    >
+        <FaBell />
+
+        {unreadCount > 0 && (
+    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full px-2">
+        {unreadCount}
+    </span>
+)}
+
+    </button>
+
+
+    {showNotifications && (
+
+<div className="absolute right-0 mt-3 w-96 bg-white shadow-xl rounded-xl border z-50">
+
+    <div className="p-4 border-b font-bold">
+
+        Notifications
+
+    </div>
+
+    <div className="max-h-96 overflow-y-auto">
+
+        {notifications.length === 0 ? (
+
+            <div className="p-4 text-gray-500">
+
+                No Notifications
+
+            </div>
+
+        ) : (
+
+            notifications.map((notification) => (
+
+                <div
+    key={notification.id}
+    onClick={() => handleNotificationClick(notification.id)}
+    className={`p-4 border-b cursor-pointer hover:bg-gray-100 ${
+        notification.is_read
+            ? "bg-white"
+            : "bg-blue-50"
+    }`}
+>
+
+                    <h3 className="font-semibold">
+
+                        {notification.title}
+
+                    </h3>
+
+                    <p className="text-sm text-gray-600">
+
+                        {notification.message}
+
+                    </p>
+
+                </div>
+
+            ))
+
+        )}
+
+    </div>
+
+</div>
+
+)}
+
+</div>
+
+    )}
+
+    {!token ? (
+
+        <>
+
+            <Link
+                to="/login"
+                className="border border-blue-600 px-4 py-2 rounded-lg"
+            >
+                Login
+            </Link>
+
+            <Link
+                to="/signup"
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+            >
+                Signup
+            </Link>
+
+        </>
+
+    ) : (
+
+        <button
+            onClick={logout}
+            className="bg-red-500 text-white px-4 py-2 rounded-lg"
+        >
+            Logout
+        </button>
+
+    )}
+
+</div>
 
       </div>
     </nav>
