@@ -7,6 +7,8 @@ import {
     getNotifications,
     markNotificationRead
 } from "../../services/notificationService";
+const notificationSound = new Audio("/sounds/notification.mp3");
+
 
 
 export default function Navbar() {
@@ -22,9 +24,17 @@ const [lastNotificationId, setLastNotificationId] = useState(null);
 
 
 useEffect(() => {
-    if (token) {
+
+    if (!token) return;
+
+    loadNotifications();
+
+    const interval = setInterval(() => {
         loadNotifications();
-    }
+    }, 5000);
+
+    return () => clearInterval(interval);
+
 }, [token]);
 
 useEffect(() => {
@@ -46,20 +56,23 @@ const loadNotifications = async () => {
 
         setNotifications(data);
 
-        if (data.length > 0) {
+    if (data.length > 0) {
 
-    if (lastNotificationId !== data[0].id) {
+        if (lastNotificationId === null) {
 
-        setLastNotificationId(data[0].id);
+            setLastNotificationId(data[0].id);
 
-        showBrowserNotification(
-            data[0].title,
-            data[0].message
-        );
+        } else if (lastNotificationId !== data[0].id) {
 
+            setLastNotificationId(data[0].id);
+
+            showBrowserNotification(
+                data[0].title,
+                data[0].message
+            );
+
+        }
     }
-
-}
 
     } catch (error) {
 
@@ -80,6 +93,7 @@ const showBrowserNotification = (title, message) => {
 
     }
 
+    notificationSound.play().catch(() => {});
 };
 
 
