@@ -23,100 +23,78 @@ export default function Booking() {
 
     };
 
-    const handleSubmit = async (e) => {
+    // ✅ Validate Form
+    const validateBooking = () => {
 
-    e.preventDefault();
+        if (
+            !form.address ||
+            !form.booking_date ||
+            !form.booking_time
+        ) {
 
-    try {
+            alert("Please fill all fields");
 
-        console.log("Service ID:", id);
+            return false;
 
-        const bookingData = {
+        }
 
-            service_id: id,
+        return true;
 
-            address: form.address,
+    };
 
-            booking_date: form.booking_date,
-
-            booking_time: form.booking_time
-
-        };
-
+    // ✅ Payment Success
     const handlePaymentSuccess = async () => {
 
-    try {
+        try {
 
-        const bookingData = {
+            const bookingData = {
 
-            service_id: id,
+                service_id: id,
 
-            address: form.address,
+                address: form.address,
 
-            booking_date: form.booking_date,
+                booking_date: form.booking_date,
 
-            booking_time: form.booking_time
+                booking_time: form.booking_time
 
-        };
+            };
 
-        const res = await createBooking(bookingData);
+            const res = await createBooking(bookingData);
 
-        alert(res.data.message);
+            alert(res.data.message);
 
-        navigate("/my-bookings");
+            navigate("/my-bookings");
 
-    }
+        }
 
-    catch(err){
+        catch (err) {
 
-        console.log(err);
+            console.log(err);
 
-        alert("Booking Failed");
+            alert(
+                err.response?.data?.detail ||
+                err.message
+            );
 
-    }
+        }
 
-};    
+    };
 
-        const res = await createBooking(bookingData);
-
-        alert(res.data.message);
-
-        navigate("/my-bookings");
-
-    } catch (err) {
-
-    console.log(err);
-
-    console.log(err.response);
-
-    alert(
-        err.response?.data?.detail ||
-        JSON.stringify(err.response?.data) ||
-        err.message
-    );
-
-}
-
-};
     return (
 
         <div className="max-w-xl mx-auto p-8">
 
             <h1 className="text-4xl font-bold mb-8">
-
                 Book Service
-
             </h1>
 
-            <form
-                onSubmit={handleSubmit}
-                className="space-y-5"
-            >
+            <form className="space-y-5">
 
                 <input
                     type="text"
                     name="address"
                     placeholder="Address"
+                    value={form.address}
                     onChange={handleChange}
                     className="w-full border p-3 rounded-lg"
                 />
@@ -124,6 +102,7 @@ export default function Booking() {
                 <input
                     type="date"
                     name="booking_date"
+                    value={form.booking_date}
                     onChange={handleChange}
                     className="w-full border p-3 rounded-lg"
                 />
@@ -131,22 +110,15 @@ export default function Booking() {
                 <input
                     type="time"
                     name="booking_time"
+                    value={form.booking_time}
                     onChange={handleChange}
                     className="w-full border p-3 rounded-lg"
                 />
 
-                {/* <button
-                    className="bg-blue-600 text-white px-6 py-3 rounded-lg"
-                >
-                    Confirm Booking
-                </button> */}
-
                 <PaymentButton
-
                     amount={499}
-
+                    validate={validateBooking}
                     onSuccess={handlePaymentSuccess}
-
                 />
 
             </form>

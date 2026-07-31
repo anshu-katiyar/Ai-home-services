@@ -1,6 +1,6 @@
 import { createOrder } from "../services/paymentService";
 
-export default function PaymentButton({ amount, onSuccess}) {
+export default function PaymentButton({ amount, onSuccess, validate}) {
 
     const handlePayment = async () => {
 
@@ -49,6 +49,8 @@ export default function PaymentButton({ amount, onSuccess}) {
                 }
 
             };
+
+
 
             const razorpay = new window.Razorpay(options);
 
