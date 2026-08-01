@@ -2,85 +2,135 @@ import { createOrder } from "../services/paymentService";
 
 export default function PaymentButton({ amount, onSuccess, validate}) {
 
-    const handlePayment = async () => {
+const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
 
-        try {
+        if (window.Razorpay) {
+            return resolve(true);
+        }
 
-            const order = await createOrder(amount);
+        const script = document.createElement("script");
 
-            const options = {
+        script.src = "https://checkout.razorpay.com/v1/checkout.js";
 
-                key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        script.onload = () => {
+            console.log("Razorpay SDK Loaded");
+            resolve(true);
+        };
 
-                amount: order.amount,
+        script.onerror = () => {
+            console.log("Razorpay SDK Failed");
+            resolve(false);
+        };
 
-                currency: order.currency,
+        document.body.appendChild(script);
 
-                name: "HomeAI",
+    });
+};
 
-                description: "Home Service Booking",
 
-                order_id: order.id,
+const handlePayment = async () => {
 
-                handler: function (response) {
+    console.log("Inside handlePayment");
+    // alert("Inside handlePayment");
 
-                    alert("Payment Successful");
+    console.log("✅ Pay Button Clicked");
+    console.log("Razorpay Key:", import.meta.env.VITE_RAZORPAY_KEY_ID);
 
-                    if(onSuccess){
+    if (validate && !validate()) {
+        return;
+    }
+    const loaded = await loadRazorpayScript();
 
-                         onSuccess(response);
+if (!loaded) {
+    alert("Razorpay SDK Failed To Load");
+    return;
+}
 
-                    }
+console.log("Window Razorpay:", window.Razorpay);
 
-                },
+    try {
 
-                prefill: {
+        console.log("🔹 Creating Order...");
 
-                    name: localStorage.getItem("fullName"),
+        const order = await createOrder(amount);
 
-                    email: localStorage.getItem("email")
+        console.log("✅ Order Response:", order);
+        // alert(JSON.stringify(order));
 
-                },
+        const options = {
 
-                theme: {
+            key: import.meta.env.VITE_RAZORPAY_KEY_ID,
 
-                    color: "#2563eb"
+            amount: order.amount,
 
+            currency: order.currency,
+
+            name: "HomeAI",
+
+            description: "Home Service Booking",
+
+            order_id: order.id,
+
+            handler: function (response) {
+
+                console.log("✅ Payment Success:", response);
+
+                alert("Payment Successful");
+
+                if (onSuccess) {
+                    onSuccess(response);
                 }
 
-            };
+            },
 
+            prefill: {
 
+                name: localStorage.getItem("fullName"),
 
-            const razorpay = new window.Razorpay(options);
+                email: localStorage.getItem("email")
 
-            razorpay.open();
+            },
 
-        }
+            theme: {
 
-        catch (error) {
+                color: "#2563eb"
 
-            console.log(error);
+            }
 
-            alert("Payment Failed");
+        };
 
-        }
+        console.log("🚀 Opening Razorpay");
+        console.log(options);
 
-    };
+        const razorpay = new window.Razorpay(options);
+
+        razorpay.open();
+
+    }
+
+    catch (error) {
+
+        console.log("❌ Payment Error:", error);
+
+        alert("Payment Failed");
+
+    }
+
+};
 
     return (
 
-        <button
-
-            onClick={handlePayment}
-
-            className="bg-green-600 text-white px-6 py-3 rounded-lg"
-
-        >
-
-            Pay ₹{amount}
-
-        </button>
+       <button
+    type="button"
+    onClick={() => {
+    // alert("Button Clicked");
+    handlePayment();
+}}
+    className="bg-green-600 text-white px-6 py-3 rounded-lg"
+>
+    Pay ₹{amount}
+</button>
 
     );
 
