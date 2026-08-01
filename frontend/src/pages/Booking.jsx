@@ -43,42 +43,45 @@ export default function Booking() {
     };
 
     // ✅ Payment Success
-    const handlePaymentSuccess = async () => {
+const handlePaymentSuccess = async (payment) => {
 
-        try {
+    try {
 
-            const bookingData = {
+        const bookingData = {
 
-                service_id: id,
+            service_id: id,
 
-                address: form.address,
+            address: form.address,
 
-                booking_date: form.booking_date,
+            booking_date: form.booking_date,
 
-                booking_time: form.booking_time
+            booking_time: form.booking_time,
 
-            };
+            payment_id: payment.razorpay_payment_id,
 
-            const res = await createBooking(bookingData);
+            order_id: payment.razorpay_order_id,
 
-            alert(res.data.message);
+            payment_status: "Paid"
 
-            navigate("/my-bookings");
+        };
 
-        }
+        const res = await createBooking(bookingData);
 
-        catch (err) {
+        alert(res.data.message);
 
-            console.log(err);
+        navigate("/my-bookings");
 
-            alert(
-                err.response?.data?.detail ||
-                err.message
-            );
+    }
 
-        }
+    catch (err) {
 
-    };
+        console.log(err);
+
+        alert("Booking Failed");
+
+    }
+
+};
 
     return (
 
