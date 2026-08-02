@@ -3,6 +3,7 @@ import {
     getBookings,
     cancelBooking
 } from "../services/bookingService";
+import ReviewForm from "../components/ReviewForm";
 
 
 
@@ -81,18 +82,39 @@ const handleCancel = async (id) => {
                 </span>
               </p>
 
-              <button
-    onClick={() => handleCancel(booking.id)}
-    className="bg-red-500 text-white px-4 py-2 rounded mt-3 hover:bg-red-600"
->
-    Cancel Booking
-</button>
+              {
+    booking.status !== "Completed" &&
+    booking.status !== "Cancelled" && (
+
+        <button
+            onClick={() => handleCancel(booking.id)}
+            className="bg-red-500 text-white px-4 py-2 rounded mt-3 hover:bg-red-600"
+        >
+            Cancel Booking
+        </button>
+
+    )
+}
+
+{
+    booking.status === "Completed" && (
+
+        <ReviewForm
+            bookingId={booking.id}
+            providerId={booking.provider_id}
+        />
+
+    )
+}
 
             </div>
           ))
         )
       }
+      
 
     </div>
+
+
   );
 }
