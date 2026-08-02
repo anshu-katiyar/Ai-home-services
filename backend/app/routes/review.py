@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends
 from app.models.review import Review
 from app.services.review_service import create_review
 from app.dependencies.auth import get_current_user
+from app.services.review_service import get_provider_reviews
 
 router = APIRouter(
     prefix="/reviews",
@@ -31,3 +32,9 @@ def add_review(
         "review_id": review_id
 
     }
+
+@router.get("/{provider_id}")
+
+def provider_reviews(provider_id: str):
+
+    return get_provider_reviews(provider_id)

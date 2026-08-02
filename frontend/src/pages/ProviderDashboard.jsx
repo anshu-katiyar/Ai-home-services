@@ -6,6 +6,9 @@ import {
     onTheWayBooking,
     completeBooking
 } from "../services/providerService";
+import RatingCard from "../components/RatingCard";
+
+
 
 export default function ProviderDashboard() {
 
@@ -129,6 +132,19 @@ const handleComplete = async (bookingId) => {
             <h1 className="text-4xl font-bold mb-8">
                 Provider Dashboard
             </h1>
+
+            {
+    bookings.length > 0 && (
+
+        <RatingCard
+            providerId={bookings[0].provider_id}
+        />
+
+    )
+}
+
+
+
 
             {
                 bookings.length === 0 ? (

@@ -8,3 +8,13 @@ export const addReview = async (data) => {
     );
 
 };
+
+export const getReviews = async (providerId)=>{
+
+    const res = await api.get(
+        `/reviews/${providerId}`
+    );
+
+    return res.data;
+
+}
