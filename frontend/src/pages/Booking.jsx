@@ -2,6 +2,10 @@ import { useState } from "react";
 import { createBooking } from "../services/bookingService";
 import { useParams, useNavigate } from "react-router-dom";
 import PaymentButton from "../components/PaymentButton";
+import LocationPicker from "../components/LocationPicker";
+
+
+
 
 export default function Booking() {
 
@@ -13,6 +17,7 @@ export default function Booking() {
         booking_date: "",
         booking_time: ""
     });
+    const [location, setLocation] = useState(null);
 
     const handleChange = (e) => {
 
@@ -56,6 +61,10 @@ const handlePaymentSuccess = async (payment) => {
             booking_date: form.booking_date,
 
             booking_time: form.booking_time,
+
+            latitude: location?.lat,
+
+            longitude: location?.lng,
 
             payment_id: payment.razorpay_payment_id,
 
