@@ -111,6 +111,19 @@ const handlePaymentSuccess = async (payment) => {
                     className="w-full border p-3 rounded-lg"
                 />
 
+                <LocationPicker
+                   onLocationSelect={(loc) => {
+
+                       setLocation(loc);
+
+                       console.log("Selected Location:", loc);
+
+                    }}
+                />
+
+
+
+
                 <input
                     type="date"
                     name="booking_date"
