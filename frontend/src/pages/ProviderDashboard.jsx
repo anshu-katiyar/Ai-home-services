@@ -119,6 +119,26 @@ const handleComplete = async (bookingId) => {
 
 };
 
+const handleNavigate = (booking) => {
+
+    if (!booking.latitude || !booking.longitude) {
+
+        alert("Customer location not available");
+
+        return;
+
+    }
+
+    window.open(
+
+        `https://www.google.com/maps/dir/?api=1&destination=${booking.latitude},${booking.longitude}`,
+
+        "_blank"
+
+    );
+
+};
+
 
 
 
@@ -157,14 +177,18 @@ const handleComplete = async (bookingId) => {
 
                     </div>
 
-                ) : (
+                ) :(
 
-                    bookings.map((booking) => (
+                    bookings.map((booking) => {
 
-                        <div
-                            key={booking.id}
-                            className="bg-white shadow rounded-lg p-6 mb-5"
-                        >
+    console.log("Booking Data:", booking);
+
+    return (
+
+        <div
+            key={booking.id}
+            className="bg-white shadow rounded-lg p-6 mb-5"
+        >
 
                             <h2 className="text-xl font-bold mb-3">
                                 Booking Details
@@ -176,6 +200,14 @@ const handleComplete = async (bookingId) => {
 
                             <p>
                                 <strong>Address:</strong> {booking.address}
+                            </p>
+
+                            <p>
+                                <strong>Latitude:</strong> {booking.latitude}
+                            </p>
+
+                            <p>
+                                <strong>Longitude:</strong> {booking.longitude}
                             </p>
 
                             <p>
@@ -209,7 +241,14 @@ const handleComplete = async (bookingId) => {
 
 </div>
 
-                           {
+<button
+    onClick={() => handleNavigate(booking)}
+    className="mt-4 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"
+>
+    🧭 Navigate
+</button>
+ 
+{
     booking.status === "Pending" && (
 
         <div className="flex gap-3 mt-4">
@@ -232,6 +271,7 @@ const handleComplete = async (bookingId) => {
 
     )
 }
+
 
 {
     booking.status === "Accepted" && (
@@ -262,7 +302,9 @@ const handleComplete = async (bookingId) => {
 
                         </div>
 
-                    ))
+);
+
+})
 
                 )
             }

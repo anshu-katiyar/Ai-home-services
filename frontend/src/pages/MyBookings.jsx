@@ -82,6 +82,8 @@ const handleCancel = async (id) => {
                 </span>
               </p>
 
+              
+
               {
     booking.status !== "Completed" &&
     booking.status !== "Cancelled" && (

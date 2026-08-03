@@ -1,10 +1,6 @@
 import api from "./api";
 
-// const API = "http://127.0.0.1:8000";
-
-const getToken = () => {
-    return localStorage.getItem("token");
-};
+const getToken = () => localStorage.getItem("token");
 
 const authHeader = () => ({
     headers: {
@@ -14,54 +10,54 @@ const authHeader = () => ({
 
 export const getProviderBookings = async () => {
 
-    const response = await api.get(`${API}/provider/bookings`,
+    const response = await api.get(
+        "/provider/bookings",
         authHeader()
     );
 
     return response.data;
-
 };
 
 export const acceptBooking = async (bookingId) => {
 
-    const response = await api.put(`${API}/provider/accept/${bookingId}`,
+    const response = await api.put(
+        `/provider/accept/${bookingId}`,
         {},
         authHeader()
     );
 
     return response.data;
-
 };
 
 export const rejectBooking = async (bookingId) => {
 
-    const response = await api.put(`${API}/provider/reject/${bookingId}`,
+    const response = await api.put(
+        `/provider/reject/${bookingId}`,
         {},
         authHeader()
     );
 
     return response.data;
-
 };
 
 export const onTheWayBooking = async (bookingId) => {
 
-    const response = await api.put(`${API}/provider/on-the-way/${bookingId}`,
+    const response = await api.put(
+        `/provider/on-the-way/${bookingId}`,
         {},
         authHeader()
     );
 
     return response.data;
-
 };
 
 export const completeBooking = async (bookingId) => {
 
-    const response = await api.put(`${API}/provider/complete/${bookingId}`,
+    const response = await api.put(
+        `/provider/complete/${bookingId}`,
         {},
         authHeader()
     );
 
     return response.data;
-
 };
