@@ -9,6 +9,7 @@ from app.routes import notification
 from app.routes import websocket
 from app.routes.payment import router as payment_router
 from app.routes.review import router as review_router
+from app.routes.provider_location import router as provider_location_router
 
 
 app = FastAPI(
@@ -36,6 +37,8 @@ app.include_router(notification.router)
 app.include_router(websocket.router)
 app.include_router(payment_router)
 app.include_router(review_router)
+app.include_router(provider_location_router)
+
 
 @app.get("/")
 def home():

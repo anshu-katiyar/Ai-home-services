@@ -61,3 +61,27 @@ export const completeBooking = async (bookingId) => {
 
     return response.data;
 };
+
+export const updateProviderLocation = async (
+    bookingId,
+    latitude,
+    longitude
+) => {
+
+    const response = await api.put(
+
+        "/provider-location/update",
+
+        {
+            booking_id: bookingId,
+            latitude,
+            longitude
+        },
+
+        authHeader()
+
+    );
+
+    return response.data;
+
+};

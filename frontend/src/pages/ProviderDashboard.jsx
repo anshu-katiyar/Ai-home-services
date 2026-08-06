@@ -4,7 +4,8 @@ import {
     acceptBooking,
     rejectBooking,
     onTheWayBooking,
-    completeBooking
+    completeBooking,
+    updateProviderLocation
 } from "../services/providerService";
 import RatingCard from "../components/RatingCard";
 
@@ -134,6 +135,56 @@ const handleNavigate = (booking) => {
         `https://www.google.com/maps/dir/?api=1&destination=${booking.latitude},${booking.longitude}`,
 
         "_blank"
+
+    );
+
+};
+
+
+const startLiveTracking = (bookingId) => {
+
+    if (!navigator.geolocation) {
+
+        alert("Geolocation is not supported");
+
+        return;
+
+    }
+
+    navigator.geolocation.watchPosition(
+
+        async (position) => {
+
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            console.log("Provider Location:", latitude, longitude);
+
+            try {
+
+                await updateProviderLocation(
+                    bookingId,
+                    latitude,
+                    longitude
+                );
+
+            } catch (err) {
+
+                console.log(err);
+
+            }
+
+        },
+
+        (error) => {
+
+            console.log(error);
+
+        },
+
+        {
+            enableHighAccuracy: true
+        }
 
     );
 
@@ -277,7 +328,13 @@ const handleNavigate = (booking) => {
     booking.status === "Accepted" && (
 
         <button
-            onClick={() => handleOnTheWay(booking.id)}
+            onClick={async () => {
+
+    await handleOnTheWay(booking.id);
+
+    startLiveTracking(booking.id);
+
+}}
             className="mt-4 bg-blue-600 text-white px-5 py-2 rounded hover:bg-blue-700"
         >
             On The Way
