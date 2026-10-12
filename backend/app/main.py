@@ -10,8 +10,9 @@ from app.routes import websocket
 from app.routes.payment import router as payment_router
 from app.routes.review import router as review_router
 from app.routes.provider_location import router as provider_location_router
-
-
+from app.routes.recommendation import router as recommendation_router
+from app.routes.provider_profile import router as provider_profile_router
+from app.routes.ai_assistant import router as ai_assistant_router
 app = FastAPI(
     title="HomeAI API"
 )
@@ -38,8 +39,9 @@ app.include_router(websocket.router)
 app.include_router(payment_router)
 app.include_router(review_router)
 app.include_router(provider_location_router)
-
-
+app.include_router(recommendation_router)
+app.include_router(provider_profile_router)
+app.include_router(ai_assistant_router)
 @app.get("/")
 def home():
     return {
