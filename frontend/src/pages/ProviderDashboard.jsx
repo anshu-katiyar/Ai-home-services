@@ -292,6 +292,12 @@ const startLiveTracking = (bookingId) => {
 
 </div>
 
+<RatingCard
+    providerId={booking.provider_id || bookings[0]?.provider_id}
+    bookingId={booking.id}
+/>
+
+
 <button
     onClick={() => handleNavigate(booking)}
     className="mt-4 bg-indigo-600 text-white px-5 py-2 rounded hover:bg-indigo-700"

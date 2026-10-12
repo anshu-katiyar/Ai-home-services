@@ -1,0 +1,18 @@
+[
+  {
+    "_id": "6ac8709dc49126adf4c524b7",
+    "booking_id": "6ac7f1393b324eed6affc4f9",
+    "provider_id": "6a8b4f36ac510fd07b5c6982",
+    "customer_email": "a9106072@gmail.com",
+    "rating": 5,
+    "review": "good services provide ,thanks home ai team."
+  },
+  {
+    "_id": "6accac851e70e398148b8553",
+    "booking_id": "6ac7f1393b324eed6affc4f9",
+    "provider_id": "6a8b4f36ac510fd07b5c6982",
+    "customer_email": "a9106072@gmail.com",
+    "rating": 5,
+    "review": ""
+  }
+]

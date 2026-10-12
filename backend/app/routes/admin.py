@@ -15,13 +15,43 @@ router = APIRouter(
 def get_all_bookings():
 
     bookings = list(db.bookings.find())
-
     data = []
 
     for booking in bookings:
-
         booking["id"] = str(booking["_id"])
         del booking["_id"]
+
+        # Fetch service details using service_id
+        service = None
+
+        try:
+            service_id = booking.get("service_id")
+
+            if service_id and ObjectId.is_valid(service_id):
+                service = db.services.find_one({
+                    "_id": ObjectId(service_id)
+                })
+
+        except Exception as error:
+            print("Service lookup error:", error)
+
+        if service:
+            service["id"] = str(service["_id"])
+            del service["_id"]
+
+            # Provide fields expected by AdminDashboard.jsx
+            booking["service"] = service
+            booking["service_name"] = service.get("name", "Service")
+            booking["service_price"] = service.get("price")
+            booking["amount"] = booking.get(
+                "amount",
+                service.get("price")
+            )
+        else:
+            booking["service"] = None
+            booking["service_name"] = "Service details unavailable"
+            booking["service_price"] = None
+            booking["amount"] = booking.get("amount")
 
         data.append(booking)
 

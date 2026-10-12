@@ -13,12 +13,15 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ServiceDetails from "./pages/ServiceDetails";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
-
+import AdminServices from "./pages/AdminServices";
+import FloatingAI from "./components/ai/FloatingAI";
 
 function App() {
   return (
     <>
       <Navbar />
+      <FloatingAI />
+
     <Routes>
 
   <Route path="/" element={<Home />} />
@@ -56,6 +59,14 @@ function App() {
     element={
         <ProtectedRoute>
             <AdminDashboard />
+        </ProtectedRoute>
+    }
+/>
+<Route
+    path="/admin/services"
+    element={
+        <ProtectedRoute>
+            <AdminServices />
         </ProtectedRoute>
     }
 />

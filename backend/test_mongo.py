@@ -1,19 +1,20 @@
+# from pymongo import MongoClient
+# import certifi
+
+# uri = "mongodb+srv://homeaianshu:Anshu910427@homeai-cluster.ncwvjv4.mongodb.net/homeai?retryWrites=true&w=majority&appName=homeai-cluster"
+
+# client = MongoClient(
+#     uri,
+#     tls=True,
+#     tlsCAFile=certifi.where()
+# )
+
+# print(client.admin.command("ping"))
+
 from pymongo import MongoClient
-import certifi
 
-uri = "mongodb+srv://homeaianshu:Anshuai910427@homeai-cluster.ncwvjv4.mongodb.net/?appName=homeai-cluster"
+uri = "mongodb+srv://homeaianshu:Anshu9104@homeai-cluster.pvdwcpg.mongodb.net/?appName=homeai-cluster"
 
-client = MongoClient(
-    uri,
-    tls=True,
-    tlsCAFile=certifi.where(),
-    serverSelectionTimeoutMS=10000
-)
+client = MongoClient(uri)
 
-try:
-    client.admin.command("ping")
-    print("✅ MongoDB Connected Successfully")
-    print(client.list_database_names())
-except Exception as e:
-    print("❌ Connection Failed")
-    print(repr(e))
+print(client.admin.command("ping"))

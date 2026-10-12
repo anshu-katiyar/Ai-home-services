@@ -1,0 +1,2 @@
+service_id,provider_id,completed_bookings,completion_rate,cancellation_rate,verified_review_count,average_verified_rating,ranking_label
+6a8b233f02a3e4c2d4cfba6b,6a8b4f36ac510fd07b5c6982,2,1.0,0.0,1,5.0,1

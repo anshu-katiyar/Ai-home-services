@@ -18,6 +18,8 @@ If you are developing a production application, we recommend using TypeScript wi
 
 rm -rf node_modules/.vite
 npm run dev
+uvicorn app.main:app --reload
 dir src\layouts
+
 
 https://github.com/anshu-katiyar/Ai-home-services.git
